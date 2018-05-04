@@ -1,0 +1,21 @@
+#include <stdio.h>
+
+int main(){
+  int n;
+  printf("Enter an integer: ");
+  scanf("%d", &n);
+
+  char filename[100];
+  printf("What filename do you want? ");
+  scanf("%s", filename);
+
+  FILE* file = fopen(filename, "wb");
+  fwrite(&n, sizeof(int), 1, file);
+  
+  int i;
+  for(i=0;i<n;i++){
+    int number = rand()%100000;
+    fwrite(&number, sizeof(int), 1, file);
+  }
+  return 0;
+}

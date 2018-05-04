@@ -1,0 +1,411 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "Student.h"
+#include "trees.h"
+#include "prototypes.h"
+
+int main(){
+  Student* array[5] = {gryffindor, ravenclaw, hufflepuff, slytherin, deceased};
+  //used to check if the specified house is a valid house
+  int houseFlag;
+  char command[100];  
+
+  do{
+    houseFlag=0;
+    printf("Enter command: ");
+    scanf("%s", command);
+
+    //prints out the help menu
+    if(strcmp(command, "help")==0){
+      FILE* helpMenu = fopen("help.txt", "r");
+      char fileRead = fgetc(helpMenu);
+
+      while(fileRead != EOF){
+	printf("%c", fileRead);
+	fileRead = fgetc(helpMenu);
+      }
+      printf("\n");
+    }
+    //loads a specified file into the roster
+    else if(strcmp(command, "load")==0){
+      char fileName[100];
+      scanf("%s", fileName);
+      FILE* file = fopen(fileName, "r");
+	
+      if(file!=NULL){
+	char* firstName = malloc(sizeof(char)*100);
+	char* lastName = malloc(sizeof(char)*100);
+	int points;
+	int year;
+	char* house = malloc(sizeof(char)*100);
+	
+	while(!feof(file)){
+	  fscanf(file, "%s %s %d %d %s", firstName, lastName, &points, &year, house);
+	  int i;
+	  for(i=0;i<HOUSES;i++)
+	    if(strcmp(house, HOUSE_NAMES[i]) == 0)
+	      add(firstName, lastName, points, year, i);
+	}
+	printf("Successfully loaded data from %s\n", fileName);
+      }
+
+      else
+	printf("Load failed. Invalid file: %s\n", fileName);
+
+      fclose(file);
+    }
+    else if(strcmp(command, "save")==0){
+       char fileName[100];
+       scanf("%s", fileName);
+       FILE* file = fopen(fileName, "w");
+
+       if(file == NULL)
+	 printf("Save failed. Invalid file: %s.\n", fileName);
+
+       else{
+	 save(gryffindor, file);
+	 save(ravenclaw, file);
+	 save(hufflepuff, file);
+	 save(slytherin, file);
+	 
+	 printf("Successfully saved data to %s.\n", fileName);
+       }
+       fclose(file);
+    }
+
+    else if(strcmp(command, "clear")==0){
+      clean(gryffindor);
+      clean(ravenclaw);
+      clean(hufflepuff);
+      clean(slytherin);
+      clean(deceased);
+    }
+
+    else if(strcmp(command, "inorder")==0){
+      printf("Inorder print-out of roster: \n\n");
+      printf("Gryffindor House\n\n");
+      inorder(gryffindor);
+      printf("\nRavenclaw House\n\n");
+      inorder(ravenclaw);
+      printf("\nHufflepuff House\n\n");
+      inorder(hufflepuff);
+      printf("\nSlytherin House\n\n");
+      inorder(slytherin);
+      printf("\nDeceased\n\n");
+      inorder(deceased);
+    }
+    else if(strcmp(command, "preorder")==0){
+      printf("Preorder print-out of roster: \n\n");
+      printf("Gryffindor House\n\n");
+      preorder(gryffindor);
+      printf("\nRavenclaw House\n\n");
+      preorder(ravenclaw);
+      printf("\nHufflepuff House\n\n");
+      preorder(hufflepuff);
+      printf("\nSlytherin House\n\n");
+      preorder(slytherin);
+      printf("\nDeceased\n\n");
+      preorder(deceased);
+    }
+    else if(strcmp(command, "postorder")==0){
+      printf("Postorder print-out of roster: \n\n");
+      printf("Gryffindor House\n\n");
+      postorder(gryffindor);
+      printf("\nRavenclaw House\n\n");
+      postorder(ravenclaw);
+      printf("\nHufflepuff House\n\n");
+      postorder(hufflepuff);
+      printf("\nSlytherin House\n\n");
+      postorder(slytherin);
+      printf("\nDeceased\n\n");
+      postorder(deceased);
+    }
+    else if(strcmp(command, "add")==0){
+      char* firstName = malloc(sizeof(char) * 100);
+      scanf("%s", firstName);
+      
+      char* lastName = malloc(sizeof(char) * 100);
+      scanf("%s", lastName);
+      
+      int points;
+      scanf("%d", &points);
+      
+      int year;
+      scanf("%d", &year);
+      
+      char* house = malloc(sizeof(char) * 100);
+      scanf("%s", house);
+
+      int i;
+      for(i=0;i<HOUSES;i++){
+	if( strcmp(house, HOUSE_NAMES[i]) == 0){
+	  add(firstName, lastName, points, year, i);
+	  printf("Added %s %s to roster.\n", firstName, lastName);
+	}
+      }
+      if(i>HOUSES || i<0)
+	printf("Add failed. Invalid house: %s.\n", house);
+
+      //add(firstName, lastName, points, year, house);      
+      
+      free(firstName);
+      free(lastName);
+      free(house);
+    }
+    else if(strcmp(command, "kill")==0){
+      Student* temp;
+      char* firstName = malloc(sizeof(Student));
+      scanf("%s", firstName);
+
+      char* lastName = malloc(sizeof(Student));
+      scanf("%s", lastName);
+
+      char* house = malloc(sizeof(Student));
+      scanf("%s", house);
+
+      int i;
+      for(i=0;i<HOUSES;i++){
+	if( strcmp(house, HOUSE_NAMES[i]) == 0){
+	  temp = delete(&array[i], firstName, lastName);
+	  printf("Moved %s %s to list of deceased students.\n", firstName, lastName);
+	}
+      }
+      
+      free(firstName);
+      free(lastName);
+      free(house);
+    }
+    
+    else if(strcmp(command, "find")==0){
+      Student* temp;
+      char* fName = malloc(sizeof(char) * 100);
+      scanf("%s", fName);
+   
+      char* lName = malloc(sizeof(char) * 100);
+      scanf("%s", lName);
+      
+      char* house = malloc(sizeof(char) * 100);
+      scanf("%s", house);
+
+      int i=0;
+      for(;i<HOUSES && houseFlag == 0;++i){
+	if(strcmp(house, HOUSE_NAMES[i]) == 0){
+	  temp = find(fName, lName, i);
+	  houseFlag = 1;
+	}
+      }
+
+      if(houseFlag == 0)
+	printf("Find failed. Invalid house: %s\n", house);
+
+      else
+	printStudent(temp);
+      
+      free(fName);
+      free(lName);
+      free(house);
+    }
+    else if(strcmp(command, "points")==0){
+      Student* temp;
+      char* firstName = malloc(sizeof(Student));
+      scanf("%s", firstName);
+
+      char* lastName = malloc(sizeof(Student));
+      scanf("%s", lastName);
+
+      char* house = malloc(sizeof(Student));
+      scanf("%s", house);
+
+      int points;
+      scanf("%d", &points);
+
+      int i=0;
+      for(;i<HOUSES && houseFlag == 0;++i){
+	if(strcmp(house, HOUSE_NAMES[i]) == 0){
+	  temp = find(firstName, lastName, i);
+	  houseFlag = 1;
+	}
+      }
+
+      if(houseFlag == 0)
+	printf("Find failed. Invalid house: %s\n", house);
+
+      else{
+	changePoints(&temp, points);
+	printf("Points for %s %s changed to %d.\n", firstName, lastName, points);
+      }
+    }
+    else if(strcmp(command, "score")==0){
+      int score = 0;
+      printf("Gryffindor: %d\n", sumScore(gryffindor));
+      printf("Ravenclaw: %d\n", sumScore(ravenclaw));
+      printf("Hufflepuff: %d\n", sumScore(hufflepuff));
+      printf("Slytherin: %d\n", sumScore(slytherin));
+    }
+
+    //prints if specified command is unknown
+    else if(strcmp(command, "quit") != 0){
+      fprintf(stderr,"Unknown command: %s\n", command);
+      while(getchar() != '\n')
+	getchar();
+    }
+  }while(strcmp(command, "quit") != 0);
+
+  clean(gryffindor);
+  clean(ravenclaw);
+  clean(hufflepuff);
+  clean(slytherin);
+  clean(deceased);
+  printf("All data cleared.\n");
+
+  return 0;
+}
+
+void add(char* firstName, char* lastName, int points, int year, House house){
+  int houseFlag = 0;
+
+  Student* node = malloc(sizeof(Student));
+
+  node->first = strdup(firstName);
+  node->last = strdup(lastName);
+  node->points = points;
+  node->year = year;
+  node->house = house;
+
+  if(year<1 || year>7)
+    printf("Add failed. Invalid year: %d\n", year);
+  
+  else{
+    switch(node->house){
+    case 0:
+      gryffindor = insert(&gryffindor, node);
+      if(gryffindor == NULL)
+	printf("Add failed. Student named %s %s already present in roster.\n", node->first, node->last);
+      break;
+    case 1:
+      ravenclaw = insert(&ravenclaw, node);
+      if(ravenclaw == NULL)
+	printf("Add failed. Student named %s %s already present in roster.\n", node->first, node->last);
+      break;
+    case 2:
+      hufflepuff = insert(&hufflepuff, node);
+      if(hufflepuff == NULL)
+	printf("Add failed. Student named %s %s already present in roster.\n", node->first, node->last);
+      break;
+    case 3:
+      slytherin = insert(&slytherin, node);
+      if(slytherin == NULL)
+	printf("Add failed. Student named %s %s already present in roster.\n", node->first, node->last);
+      break;
+    }
+  }
+}
+
+Student* find(char* firstName, char* lastName, House house){
+  Student* temp;
+  
+  switch(house){
+  case 0:
+    
+    temp = search(firstName, lastName, gryffindor);
+    break;
+  case 1:
+    temp = search(firstName, lastName, ravenclaw);
+    break;
+  case 2:
+    temp = search(firstName, lastName, hufflepuff);
+    break;
+  case 3:
+    temp = search(firstName, lastName, slytherin);
+    break;
+  }
+
+  if(temp != NULL)
+    return temp;
+
+  else
+    printf("Find failed. %s %s was not found in %s House\n",firstName, lastName, HOUSE_NAMES[house]);
+}
+
+void clean(Student* root){
+  if(root != NULL){
+    clean(root->left);
+    clean(root->right);
+    free(root);
+  }
+}
+
+void addPoints(char* firstName, char*lastName, House house, int points){
+  Student* temp;
+  switch(house){
+  case 0:
+    temp = search(firstName, lastName, gryffindor);
+    break;
+  case 1:
+    temp = search(firstName, lastName, ravenclaw);
+    break;
+  case 2:
+    temp = search(firstName, lastName, hufflepuff);
+    break;
+  case 3:
+    temp = search(firstName, lastName, slytherin);
+    break;
+  default:
+    printf("Point change failed. Invalid house: %s\n", HOUSE_NAMES[house]);
+  }
+
+  if(temp == NULL)
+    printf("Point change failed. %s %s was not found in %s House.\n", firstName, lastName, HOUSE_NAMES[house]);
+
+}
+
+void printStudent(const Student* student){
+  char* name = strdup(student->first);
+  strcat(name, " ");
+  strcat(name, student->last);
+
+  printf("%-25s\t\tPoints: %d\tYear: %d House: %s\n", name, student->points, student->year, HOUSE_NAMES[student->house]);
+}
+
+void inorder(Student* root){
+  if(root!=NULL){
+    inorder(root->left);
+    printStudent(root);
+    inorder(root->right);
+  }
+}
+
+void preorder(Student* root){
+  if(root!=NULL){
+    printStudent(root);
+    preorder(root->left);
+    preorder(root->right);
+  }
+}
+
+void postorder(Student* root){
+  if(root!=NULL){
+    postorder(root->left);
+    postorder(root->right);
+    printStudent(root);
+  }
+}
+
+void changePoints(Student** root, int points){
+  (*root)->points += points;
+}
+
+int sumScore(Student* root){
+  if(root==NULL)
+    return 0;
+  return (root->points + sumScore(root->left)+sumScore(root->left));
+}
+
+void save(Student* root, FILE* file){ 
+  if(root!=NULL){
+    fprintf(file, "%s %s %d %d %s\n", root->first, root->last, root->points, root->year, HOUSE_NAMES[root->house]);
+    save(root->left, file);
+    save(root->right, file);
+  }
+}

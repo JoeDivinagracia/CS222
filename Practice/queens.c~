@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define SIZE 8
+int main(){
+  //can cast before malloc but do not have to
+  char** board = malloc(sizeof(char*)*SIZE);
+  int i,j;
+  
+  for(i=0;i<SIZE;i++)
+    board[i] = malloc(sizeof(char)*SIZE);
+
+  srand(time(NULL));
+
+  for(i=0;i<SIZE;i++)
+    for(j=0;j<SIZE;j++){
+      int value = rand()%SIZE;
+      if(value == 0)
+	board[i][j] = 'Q';
+      else
+	board[i][j] = ' ';
+    }
+  
+  return 0;
+}

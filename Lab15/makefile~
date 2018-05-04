@@ -1,0 +1,5 @@
+battle: main.cpp zombie.cpp human.cpp
+	g++ -o battle main.cpp
+
+clean:
+	rm -f battle

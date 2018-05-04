@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include "new_string.h"
+#include <string.h>
+#include <stdlib.h>
+
+int main(){
+
+  const char* source = "swag money";
+  char destination[2048*sizeof(char)];
+  char new_destination[2048*sizeof(char)];
+  
+  //new_strlen
+  printf("strlen():\n");
+  int length = new_strlen(source);
+  int length2 = strlen(source);
+  printf("Length of \"%s\" is: %d\nString.h: %d\n\n",source, length,length2);
+
+  //strcpy functions
+  printf("strcpy():\n");
+  new_strcpy(new_destination, source);
+  printf("new_string.h\nOG: \"%s\"\nCopy: \"%s\"\n", source, new_destination);
+  strcpy(destination, source);
+  printf("<string.h>\nOG: \"%s\"\nCopy: \"%s\"\n\n", source, destination);
+
+  //strncpy functions
+  printf("strncpy():\n");
+  new_strncpy(new_destination, source, 3);
+  printf("new_string.h\nOG: \"%s\"\nFirst 3 chars of copy: \"%s\"\n", source, new_destination);
+  strncpy(destination, source, 3);
+  printf("string.h\nOG: \"%s\"\nFirst 3 chars of copy: \"%s\"\n\n", source, destination);
+
+  //strcmp functions
+  printf("strcmp():\n");
+  int val = new_strcmp(source, "Swag Money");
+  printf("%d\n", val);
+  val = strcmp(source, "Swag money");
+  printf("%d\n\n", val);
+
+  printf("strncmp():\n");
+  val = new_strncmp(source, "swat money", 5);
+  printf("Ours: %d\n", val);
+  val = strncmp(source, "swat money", 5);
+  printf("Theirs: %d\n\n", val);
+
+  //strcats
+  printf("strcat():\n");
+  new_strcpy(destination, "Hell yea");
+  new_strcat(destination, source);
+  printf("Ours: %s\n", destination);
+
+  char destination2[500*sizeof(int)];
+  new_strcpy(destination2, "Hell yea");
+  strcat(destination2, source);
+  printf("Theirs: %s\n\n", destination2);
+  
+  //strncat
+  printf("strncat():\n");
+  new_strcpy(destination, "Bunghole ");
+  new_strncat(destination, source, 3);
+  printf("Ours: %s\n", destination);
+
+  new_strcpy(destination2, "Bunghole");
+  strncat(destination2, source, 3);
+  printf("Theirs: %s\n\n", destination2);
+
+  printf("new_strchr():\n");
+  const char str1[] = "Heywood Jablowme";
+  const char chr1 = 'z';
+  char* ret1;
+  ret1 = new_strchr(str1, chr1);
+  printf("String character \"%s\" at %c = %s\n\n", str1, chr1, ret1);
+
+  printf("strchr:\n");
+  const char chr = 'b';
+  char* ret;
+  ret = strchr(str1, chr);
+  printf("String character \"%s\" at %c = %s\n\n", str1, chr, ret);
+
+  const char* haystack= "Cant change what makes your dick hard";
+  const char* needle = "makes";
+  char* strstr_ret;
+
+  printf("Init string: %s\n", haystack);
+  
+  strstr_ret = new_strstr(haystack, needle);
+  printf("Substring: %s\n", strstr_ret);
+  return 0;
+}

@@ -1,0 +1,59 @@
+//implements atoi() function
+#include <stdio.h>
+
+int atoi(char* number);
+char* itoa(int number, char* string);
+
+int main(){
+  int result = atoi("-666");
+  printf("%d\n", result);
+
+  char text[12];
+  itoa(-4981, text);
+  printf("The text is %s\n", text);
+  return 0;
+}
+
+int atoi(char* number){
+  int i=0, value=0, sign=1;
+  if(number[0] == '-'){
+    sign = -1;
+    i=1;
+  }
+  while(number[i] != '\0'){
+    value = value*10+number[i]-'0';//subtracts by the ascii value of '0'
+    i++;
+  }
+  return sign*value;
+}
+
+char* itoa(int number, char* string){
+  int i=0, negative=0;
+
+  if(number<0){
+    number*=-1;
+    negative = 1;
+  }
+    
+  while(number != 0){
+    string[i] = (number%10)+'0';
+    number/=10;
+    i++;
+  }
+  
+  string[i] = '\0';
+  
+  if(negative == 1){
+    string[i] = '-';
+    i++;
+  }
+  
+  int j;
+  for(j=0;j<i/2;j++){
+    char temp = string[j];
+    string[j] = string[i-j-1];
+    string[i-j-1] = temp;
+  }
+  
+  return string;
+}

@@ -1,0 +1,17 @@
+#include <stdio.h>
+
+void makeLower(char* letter);
+
+int main(){
+  char thing = 'P';
+  putchar(thing);
+  makeLower(&thing);
+  putchar(thing);
+  
+  return 0;
+}
+
+void makeLower(char* letter){
+  if(*letter >= 'A' && *letter <= 'Z')
+    *letter+=('a'-'A');
+}

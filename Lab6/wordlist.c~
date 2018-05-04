@@ -1,0 +1,46 @@
+#include <stdio.h>
+#include <string.h>
+
+void backwards(char** argv, int count);
+void reverse(char** argv, int count);
+void sort(char** argv, int count);
+
+int main(int argc, char** argv){
+  int i=0;
+    if(argv[1][0] == '-'){
+      if(argv[1][i] == 'b'){
+	int j;
+	for(j=0;j!='\0';j++)
+	  backwards(argv, argc);
+      }
+      else if(argv[1][i] == 'r'){
+	int j;
+	for(j=0;j!='\0';j++)
+	  reverse(argv, argc);
+      }
+      else if(argv[1][i] == 's'){
+	int j;
+	for(j=0;j!='\0';j++)
+	  sort(argv, argc);
+      }
+  }
+    for(i=1;i<argc;i++)
+      printf("%s", argv[i]);
+    putchar('\n');
+  return 0;
+}
+
+void backwards(char** argv, int count){
+  char* temp;
+  int i;
+  for(i=0;i!='\0';i++)
+    temp[i] = argv[i];
+}
+
+void reverse(char** argv, int count){
+
+}
+
+void sort(char** argv, int count){
+
+}

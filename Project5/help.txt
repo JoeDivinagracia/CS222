@@ -1,0 +1,38 @@
+help
+Prints this display
+
+load <filename>
+Adds the contents of a file to the current roster
+
+save <filename>
+Saves the current roster to a file
+
+clear
+Clear the current roster
+
+inorder
+Print out an inorder traversal of the roster for each house
+
+preorder
+Print out a preorder traversal of the roster for each house
+
+postorder
+Print out a postorder traversal of the roster for each house
+
+add <firstname> <lastname> <points> <year> <house>
+Adds a student to the roster
+
+kill <firstname> <lastname> <house>
+Moves a student to the deceased list
+
+find <firstname> <lastname> <house>
+Searches for a student in a house
+
+points <firstname> <lastname> <house> <points>
+Changes the points a student has earned by a specified amount
+
+score
+Lists the point totals for all four houses
+
+quit
+Quits the program

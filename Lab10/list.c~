@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+LinkNode* add(LinkNode* head, int value);
+LinkNode* delete(LinkNode* head, int value);
+void print(LinkNode* head);
+void empty(LinkNode* head);
+
+typedef struct _LinkNode{
+  int data;
+  struct _LinkNode next;
+}LinkNode;
+
+LinkNode* head = null;
+
+void userChoice(){
+  printf("1. Add new element\n2. Delete element\n3. Print list\n4. Exit");
+  int choice;
+  scanf("%d", &choice);
+
+  switch(choice){
+  case(1):
+    printf("Enter a value: ");
+    int value;
+    scanf("%d", &value);
+    add(head, value);
+    break;
+  case(2):
+    printf("Enter an element to delete: ");
+    int element;
+    scanf("%d", &element);
+    delete(head, element);
+    break;
+  case(3):
+    print(head);
+    break;
+  case(4):
+    free(head);
+  }
+}
+
+LinkNode* add(LinkNode* head, int value){
+  LinkNode* node = malloc(sizeof(LinkNode));
+  node->data = value;
+  if(head == NULL){
+    node->next = head;
+    head = node;
+  }
+  
+  else{
+    node->next = head;
+    head = node;
+  }
+  return node;
+}
+
+LinkNode* delete(LinkNode* head, int value){
+  if(head == NULL)
+    return NULL;
+
+  while(head->data != value)
+    head = head->next;
+  
+    LinkNode* temp = head;
+    free(head);
+    temp = head->next;
+    return temp;
+}
+
+void print(LinkNode* head){
+  
+}
+
+void empty(LinkNode* head){
+  
+}
+
+int main(){
+  userChoice();
+  return 0;
+}

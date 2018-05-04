@@ -1,0 +1,165 @@
+#include <stdio.h>
+#include <math.h>
+
+/*sets up given functions*/
+void lazyCaterer(int cuts, int limit);
+void primeNumbers(int startNum, int limit);
+int isPrime(int num);
+long long fibonacci(long long startNum, int limit);
+void collatz(int startNum, int limit);/*startNum must be > 1, limit is the value at which the loops stops running*/
+void happyNumbers(int startNum, int limit);
+int happyChecker(int num);
+
+
+int main(){
+  lazyCaterer(0,50);
+
+  primeNumbers(2,50);
+  
+  fibonacci(0,50);
+  
+  collatz(1,50);
+  
+  happyNumbers(1,50);
+  return 0;
+}
+
+/*
+  cuts: the amount of cuts to cut the cake into
+  limit: tells function when to stop
+ */
+void lazyCaterer(int cuts, int limit){
+  printf("\nLazy Caterer's Sequence:\n");
+  while(cuts<limit){
+    int pieces=((cuts*cuts)+(cuts)+2)/2;
+    printf("%d ", pieces);
+    cuts++;
+  }
+  printf("\n");
+}
+
+/*
+  startNum: number at which the program starts
+  limit: tells function when to stop
+ */
+void primeNumbers(int startNum, int limit){
+  printf("\nPrime Numbers:\n");
+  int numCount=0;
+  while(numCount<limit){
+    if(isPrime(startNum) == 0)/* if the given number is even, increment by 1*/
+      startNum++;
+    else{
+      printf("%d ", startNum);
+      startNum++;
+      numCount++;
+    }
+  }
+  printf("\n");
+}
+
+/*
+  num: number that the function will test for primality
+ */
+int isPrime(int num){
+  if(num%2==0 && num!=2)/* if num is even AND not 2...*/
+    return 0;/*... it is not Prime*/
+  else{
+    int divide;/*the divisor that will be used to test for prime number */
+    for(divide=3;divide<=sqrt(num);divide+=2){/* divides each number by every number up to sqrt*/
+      if(num%divide==0)/* is the number is still even...*/
+	return 0;/*... it is not prime*/
+    }
+    return 1;
+  }
+}
+
+/*
+  Fibonacci Sequence
+  startNum: number at which the function begins
+  limit: the val at which the function stops running
+*/
+long long fibonacci(long long startNum, int limit){
+  printf("\nFibonacci Sequence:\n");
+  int numCount=0;
+  long long num1=0, num2=0, sum=0;
+  while(numCount<limit){
+    if(startNum==0){/*if the number is 0, set num1=1 and sum=num1*/
+      num1=1;
+      sum=num1;
+    }
+    else{/*if not above, set num1 to num2, and num2 to the previous sum, and add them for the new sum*/
+      num1=num2;
+      num2=sum;
+      sum=num1+num2;
+    }
+    printf("%lld ", sum);
+    /* increment statements*/
+    startNum++;
+    numCount++;
+  }
+  printf("\n");
+}
+
+/*
+  Used to find the Collatz Stopping Times up to 50
+  startNum: number from which the function runs
+  limit: number at which the fcuntion terminates
+ */
+void collatz(int startNum, int limit){
+  printf("\nCollatz Stopping Times:\n");
+  int numCount=0;/*used to run up until the upper limit*/
+  while(numCount<limit){
+    int num = startNum;/* sets num to startNum; w/o this, startNum would always resolve back to 1 until the loop ends and never increment beyond*/
+    int steps=0;/* keeps track of steps necessary to reach 1*/
+    while(num!=1){
+      if(num%2==0)/*is num is even*/
+	num/=2;
+      else if(num%2!=0)/*if num is odd*/
+	num = (num*3)+1;
+      steps++;
+    }
+    printf("%d ", steps);/*prints steps*/
+    /* increment operation */
+    numCount++;
+    startNum++;
+  }
+  printf("\n");
+}
+
+/*
+  startNum: number at which the function starts
+  limit: value at which the function stops running
+ */
+void happyNumbers(int startNum, int limit){
+  printf("\nHappy Numbers:\n");
+  int numCount=0;
+  while(numCount<limit){
+    int num = startNum;
+    while(num!=1 && num!=4){
+      num=happyChecker(num);/*calls function to check if the number is happy*/
+    }
+    if(num==1){/* if the number converges on 1...*/
+      printf("%d ", startNum);
+      numCount++;
+    }
+    startNum++;
+  }
+  printf("\n");
+}
+
+/*
+  Checks a given number to see if it is happy
+  num: given number
+ */
+int happyChecker(int num){
+  int sum=0;
+  /*divides by 10 to remove the LSD from the number, and then rechecks the number as long as the num/10 is greater than 0*/
+  while(num/10>0){
+    int digit = num%10;
+    sum+=digit*digit;
+    num/=10;
+  }
+  if(num<10)/*if the number is below 10, square it and set it to sum*/
+    sum+=num*num;
+  return sum;
+}

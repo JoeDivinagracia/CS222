@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include "stack.h"
+#include <stdlib.h>
+
+int main(){
+  printf("Stack size: %ld\n", sizeof(Stack));
+  return 0;
+}
+
+void push(Stack* stack, double value){
+  if(stack->size == stack->capacity){
+    stack->capacity*=2;
+    stack->values = realloc(stack->values, sizeof(double)*stack->capacity);
+  }
+
+  stack->values[stack->size] = value;
+  stack->size++;
+}
+
+double pop(Stack* stack){
+    stack->size--;
+    return stack->values[stack->size];
+}
+
+double top(Stack* stack){
+  return stack->values[stack->size-1];
+}

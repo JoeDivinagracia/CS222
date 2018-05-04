@@ -1,0 +1,5 @@
+bits: bits.c
+	gcc -o bits bits.c -lm
+
+clean:
+	rm -f bits

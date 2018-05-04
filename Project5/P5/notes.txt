@@ -1,0 +1,2 @@
+Use string.h & strcmp to sort by name
+BSTs n shit

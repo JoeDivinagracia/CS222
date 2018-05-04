@@ -1,0 +1,15 @@
+#include <stdio.h>
+#incldude "stack.h"
+#include "term.h"
+
+double evaluate(Term terms[], int size);
+
+int main(){
+
+  return 0;
+}
+
+double evaluate(Term terms[], int size){
+  Stack stack = 
+  
+}

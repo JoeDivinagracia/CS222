@@ -1,0 +1,23 @@
+#include <stdio.h>
+
+typedef struct _Tree{
+  int data;
+  struct _Tree* left;
+  struct _Tree* right;
+}Tree;
+
+Tree* find(Tree* root, int value){
+  if(root == NULL)
+    return NULL;
+  else if(value == root->data)
+    return root;
+  else if(value < root->data)
+    return find(root->left, value);
+  else
+    return find(root->right, value);
+}
+
+int main(){
+
+  return 0;
+}

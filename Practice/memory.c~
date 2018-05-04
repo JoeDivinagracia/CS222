@@ -1,0 +1,36 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(){
+  printf("Enter size of list: ");
+  int size;
+  scanf("%d", &size);
+
+  int* array = malloc(size*sizeof(int));
+
+  int i;
+  for(i=0;i<size;i++){
+    printf("Enter element %d: ",i+1);
+    scanf("%d", &array[i]);
+  }
+
+  for(i=0;i<size-1;i++){
+    int smallest=i;
+    int j;
+    for(j=i+1;j<size;j++){
+      if(array[j] < array[smallest])
+	smallest = j;
+    }
+    int temp = array[smallest];
+    array[smallest] = array[i];
+    array[i] = temp;
+  }
+
+  printf("Sorted list:\n");
+  for(i=0;i<size;i++)
+    printf("%d, ", array[i]);
+  printf("%d\n", array[size-1]);
+  free(array);
+  array = NULL;
+  return 0;
+}

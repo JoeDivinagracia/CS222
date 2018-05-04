@@ -1,0 +1,12 @@
+#include "Student.h"
+
+void add(char* firstName, char* lastName, int points, int yeat, House house, Student* houses[]);
+void clean(Student* root);
+void addPoints(char* firstName, char* lastName, House house, int points);
+void inorder(Student* root);
+void preorder(Student* root);
+void postorder(Student* root);
+void printStudent(const Student* student);
+void changePoints(Student** root, int points);
+int sumScore(Student* root);
+void save(Student* root, FILE* file);

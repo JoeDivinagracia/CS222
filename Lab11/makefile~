@@ -1,0 +1,5 @@
+trees: trees.c
+	gcc -o trees trees.c
+
+clean:
+	rm -f trees
